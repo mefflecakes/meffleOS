@@ -1,6 +1,8 @@
-name: Build and Push Custom Image
+name: Build and Push MeffleOS
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -9,27 +11,28 @@ jobs:
 
     permissions:
       contents: read
-      packages: write # Needed for pushing to GHCR
-      id-token: write
+      packages: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up container build environment
-        uses: containers/podman-install@v1
+      - name: Set up Buildah
+        uses: redhat-actions/setup-buildah@v1
 
-      - name: Build image
-        run: |
-          podman build -t localhost/meffleos .
+      - name: Build container
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: meffleos
+          tags: latest
+          containerfiles: |
+            ./Containerfile
 
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Tag image
-        run: |
-          podman tag localhost/meffleos ghcr.io/${{ github.repository_owner }}/meffleos:latest
-
-      - name: Push image to GHCR
-        run: |
-          podman push ghcr.io/${{ github.repository_owner }}/meffleos:latest
+      - name: Push to GitHub Container Registry
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          image: mefflecakes/meffleos
+          tags: latest
