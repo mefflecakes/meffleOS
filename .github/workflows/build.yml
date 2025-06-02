@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  container-build:
-    runs-on: ubuntu-latest
-    name: Universal Blue Container Build
-    container:
-      image: ghcr.io/ublue-os/image-builder:main
-      options: --privileged
+  build:
+    runs-on: fedora-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo dnf install -y podman
 
       - name: Build image
         run: |
