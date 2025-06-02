@@ -18,6 +18,6 @@ mkdir -p /usr/share/plymouth/themes/steamos
 cp /ctx/build_files/plymouth/steamos/* /usr/share/plymouth/themes/steamos/
 
 echo "▶ Setting custom Plymouth theme as default..."
-plymouth-set-default-theme -R steamos
+plymouth-set-default-theme steamos
 
 echo "✅ build.sh completed successfully."
