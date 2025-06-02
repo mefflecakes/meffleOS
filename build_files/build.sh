@@ -4,21 +4,19 @@ set -ouex pipefail
 
 ### Install packages
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
+dnf5 install -y tmux plymouth
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
-
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
-
-#### Example for enabling a System Unit File
-
+# Enable podman socket
 systemctl enable podman.socket
+
+### Custom: De-Bazzite + SteamOS Plymouth
+
+# Remove Bazzite theme if present
+dnf5 remove -y bazzite-plymouth-theme || true
+
+# Copy SteamOS Plymouth theme into the image
+mkdir -p /usr/share/plymouth/themes/steamos
+cp /ctx/build_files/plymouth/steamos/* /usr/share/plymouth/themes/steamos/
+
+# Set SteamOS theme as default
+plymouth-set-default-theme -R steamos

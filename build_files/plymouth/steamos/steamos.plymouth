@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=SteamOS Logo
+Description=A theme that features the SteamOS logo.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/steamos
+ScriptFile=/usr/share/plymouth/themes/steamos/steam.script
