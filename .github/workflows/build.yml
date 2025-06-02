@@ -9,7 +9,7 @@ jobs:
     name: Build with Podman
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install podman
         run: |
@@ -28,7 +28,7 @@ jobs:
           mv meffite.tar out/
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: meffite
           path: out/
