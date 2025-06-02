@@ -21,15 +21,15 @@ jobs:
 
       - name: Build image
         run: |
-          podman build -t localhost/meffite .
+          podman build -t localhost/meffleos .
 
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Tag image
         run: |
-          podman tag localhost/meffite ghcr.io/${{ github.repository_owner }}/meffite:latest
+          podman tag localhost/meffleos ghcr.io/${{ github.repository_owner }}/meffleos:latest
 
       - name: Push image to GHCR
         run: |
-          podman push ghcr.io/${{ github.repository_owner }}/meffite:latest
+          podman push ghcr.io/${{ github.repository_owner }}/meffleos:latest
