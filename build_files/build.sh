@@ -1,22 +1,23 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-set -ouex pipefail
+echo "▶ Installing required packages..."
+dnf5 install -y \
+  tmux \
+  plymouth \
+  plymouth-plugin-script
 
-### Install packages
-
-dnf5 install -y tmux plymouth
-
-# Enable podman socket
+echo "▶ Enabling podman socket..."
 systemctl enable podman.socket
 
-### Custom: De-Bazzite + SteamOS Plymouth
-
-# Remove Bazzite theme if present
+echo "▶ Removing Bazzite Plymouth theme if installed..."
 dnf5 remove -y bazzite-plymouth-theme || true
 
-# Copy SteamOS Plymouth theme into the image
+echo "▶ Installing custom Plymouth theme..."
 mkdir -p /usr/share/plymouth/themes/steamos
 cp /ctx/build_files/plymouth/steamos/* /usr/share/plymouth/themes/steamos/
 
-# Set SteamOS theme as default
+echo "▶ Setting custom Plymouth theme as default..."
 plymouth-set-default-theme -R steamos
+
+echo "✅ build.sh completed successfully."
