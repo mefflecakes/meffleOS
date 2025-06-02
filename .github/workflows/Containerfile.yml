@@ -17,8 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Buildah
-        uses: redhat-actions/setup-buildah@v1.5.0
+- name: Set up Buildah
+  uses: redhat-actions/setup-buildah@v1
+
 
       - name: Build container
         uses: redhat-actions/buildah-build@v2.10.0
