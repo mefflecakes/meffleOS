@@ -1,34 +1,32 @@
-name: Build SteamOS Custom Image
+name: Build Meffite Image
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  container-build:
     runs-on: ubuntu-latest
-    name: Build with Podman
+    name: Universal Blue Container Build
+    container:
+      image: ghcr.io/ublue-os/image-builder:main
+      options: --privileged
     steps:
-      - name: Checkout code
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install podman
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y podman
-
-      - name: Build the image
+      - name: Build image
         run: |
           podman build -t meffite .
 
-      - name: Export image as tar
+      - name: Export image
         run: |
           container_id=$(podman create meffite)
-          podman export $container_id > meffite.tar
-          mkdir out
+          podman export "$container_id" > meffite.tar
+          mkdir -p out
           mv meffite.tar out/
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3.1.3
+      - name: Upload image
+        uses: actions/upload-artifact@v4
         with:
           name: meffite
           path: out/
