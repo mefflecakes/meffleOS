@@ -5,16 +5,18 @@ on:
 
 jobs:
   build:
-    runs-on: fedora-latest
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Set up environment
         run: |
-          sudo dnf install -y podman
+          sudo apt update
+          sudo apt install -y podman
 
-      - name: Build image
+      - name: Build the image
         run: |
           podman build -t meffite .
 
