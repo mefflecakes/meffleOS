@@ -21,7 +21,7 @@ jobs:
         uses: redhat-actions/setup-buildah@v1.3.0
 
       - name: Build container
-        uses: redhat-actions/buildah-build@v2.10.0
+        uses: redhat-actions/buildah-build@v2.13
         with:
           image: meffleos
           tags: latest
